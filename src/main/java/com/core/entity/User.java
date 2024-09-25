@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,4 +25,8 @@ public class User {
     @OneToOne
     @JoinColumn(name = "adress_id", referencedColumnName = "id")
     private Adress adress;
+
+    @OneToMany
+    @JoinColumn(name = "service_provider_id", referencedColumnName ="id")
+    private ServiceProvider serviceProvider;
 }
