@@ -23,8 +23,8 @@ public class User {
     private String password;
 
     @OneToOne
-    @JoinColumn(name = "adress_id", referencedColumnName = "id")
-    private Adress adress;
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private Address address;
 
     @OneToMany
     @JoinColumn(name = "service_provider_id", referencedColumnName ="id")
