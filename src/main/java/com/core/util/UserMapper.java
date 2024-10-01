@@ -16,9 +16,9 @@ public abstract class UserMapper {
             addressDTO = AddressMapper.toAddressDTO(user.getAddress());
         }
 
-        if(user.getServiceProvider() != null) {
-            serviceProviderDTO = ServiceProviderMapper.toServiceProviderDTO(user.getServiceProvider());
-        }
+        // if(user.getServiceProvider() != null) {
+        //     serviceProviderDTO = ServiceProviderMapper.toServiceProviderDTO(user.getServiceProvider());
+        // }
 
         return new UserDTO(
             user.getId(),
@@ -38,8 +38,8 @@ public abstract class UserMapper {
             userDTO.getId(),
             userDTO.getEmail(),
             userDTO.getPassword(),
-            AddressMapper.toAddress(userDTO.getAddressDTO()),
-            ServiceProviderMapper.toServiceProvider(userDTO.getServiceProviderDTO())
+            AddressMapper.toAddress(userDTO.getAddressDTO())
+            // ServiceProviderMapper.toServiceProvider(userDTO.getServiceProviderDTO())
         );
     }
 }
