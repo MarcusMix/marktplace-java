@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ServiceProviderDTO {
-    private Long id;
+    // private Long id;
     private String name;
     private String description;
     private String experience;

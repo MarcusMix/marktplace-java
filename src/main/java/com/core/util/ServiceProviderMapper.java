@@ -8,7 +8,7 @@ public abstract class ServiceProviderMapper {
     public static ServiceProviderDTO toServiceProviderDTO(ServiceProvider serviceProvider) {
 
         return new ServiceProviderDTO(
-            serviceProvider.getId(),
+            // serviceProvider.getId(),
             serviceProvider.getName(),
             serviceProvider.getDescription(),
             serviceProvider.getExperience(),
@@ -18,7 +18,7 @@ public abstract class ServiceProviderMapper {
 
     public static ServiceProvider toServiceProvider(ServiceProviderDTO serviceProviderDTO) {
         return new ServiceProvider(
-            serviceProviderDTO.getId(),
+            // serviceProviderDTO.getId(),
             serviceProviderDTO.getName(),
             serviceProviderDTO.getDescription(),
             serviceProviderDTO.getExperience(),
