@@ -10,7 +10,7 @@ public abstract class UserMapper {
     public static UserDTO toUserDTO(User user) {
 
         AddressDTO addressDTO = null;
-        ServiceProviderDTO serviceProviderDTO = null;
+        // ServiceProviderDTO serviceProviderDTO = null;
 
         if(user.getAddress() != null) {
             addressDTO = AddressMapper.toAddressDTO(user.getAddress());
@@ -24,8 +24,8 @@ public abstract class UserMapper {
             user.getId(),
             user.getEmail(),
             user.getPassword(),
-            addressDTO,
-            serviceProviderDTO
+            addressDTO
+            // serviceProviderDTO
         );
     }
 

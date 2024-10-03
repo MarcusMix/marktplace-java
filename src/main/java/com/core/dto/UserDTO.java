@@ -1,7 +1,5 @@
 package com.core.dto;
 
-import com.core.entity.Address;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,5 +12,5 @@ public class UserDTO {
     private String email;
     private String password;
     private AddressDTO addressDTO;
-    private ServiceProviderDTO serviceProviderDTO;
+    // private ServiceProviderDTO serviceProviderDTO;
 }
