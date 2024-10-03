@@ -1,11 +1,17 @@
 package com.core.controller;
 
+<<<<<<< HEAD
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+=======
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+>>>>>>> 01a340a2634ce3cd5f4f891a18e72efd3c89d330
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +33,7 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(userDTOSalvo);
     }
+<<<<<<< HEAD
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> findAll() {
@@ -34,5 +41,7 @@ public class UserController {
         
         return ResponseEntity.ok(usersDTO);
     }
+=======
+>>>>>>> 01a340a2634ce3cd5f4f891a18e72efd3c89d330
     
 }
