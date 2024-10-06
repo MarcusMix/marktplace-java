@@ -13,4 +13,5 @@ public class ServiceProviderDTO {
     private String description;
     private String experience;
     private String image;
+    private Long userId;
 }

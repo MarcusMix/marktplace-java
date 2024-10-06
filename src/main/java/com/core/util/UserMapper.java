@@ -25,7 +25,10 @@ public abstract class UserMapper {
             user.getEmail(),
             user.getPassword(),
             addressDTO
+<<<<<<< HEAD
             // serviceProviderDTO
+=======
+>>>>>>> ed3520c (feat: save service provider (with error 500))
         );
     }
 

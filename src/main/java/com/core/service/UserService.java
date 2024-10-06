@@ -44,6 +44,20 @@ public class UserService {
 
         return userDTOSalvo;
     }
+
+    public List<UserDTO> findAll() {
+        List<User> users = repository.findAll();
+
+        List<UserDTO> usersDTO = users.stream()
+        .map(UserMapper::toUserDTO)
+        .collect(Collectors.toList());
+
+        if (usersDTO.isEmpty()) {
+            throw new NoSuchElementException("Nenhum usuário encontrado.");
+        }
+
+        return usersDTO;
+    }
     
     public List<UserDTO> findAll() {
         List<User> users = repository.findAll();
