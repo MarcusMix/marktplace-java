@@ -1,6 +1,8 @@
 package com.core.service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,29 +23,35 @@ public class ServiceProviderService {
     @Autowired
     private UserRepository userRepository;
 
-    public ServiceProviderDTO save(ServiceProviderDTO serviceProviderDTO) {
-        // Buscar o User já existente pelo ID
+    public ServiceProviderDTO saveServiceProvider(ServiceProviderDTO serviceProviderDTO) {
+        // Buscar o User já existente pelo ID fornecido no DTO
         User existingUser = userRepository.findById(serviceProviderDTO.getUserId())
             .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado!"));
-    
-        // Criar o ServiceProvider e configurar os campos herdados do User
-        ServiceProvider serviceProvider = new ServiceProvider();
-        serviceProvider.setId(existingUser.getId());  // Reutilizando o ID do usuário existente
-        serviceProvider.setEmail(existingUser.getEmail());
-        serviceProvider.setPassword(existingUser.getPassword());
-        serviceProvider.setAddress(existingUser.getAddress());
-    
-        // Adicionar os campos específicos do ServiceProvider
-        serviceProvider.setName(serviceProviderDTO.getName());
-        serviceProvider.setDescription(serviceProviderDTO.getDescription());
-        serviceProvider.setExperience(serviceProviderDTO.getExperience());
-        serviceProvider.setImage(serviceProviderDTO.getImage());
-    
-        // Salvar o ServiceProvider
+
+        // Converter o DTO para a entidade ServiceProvider, associando o User
+        ServiceProvider serviceProvider = ServiceProviderMapper.toServiceProvider(serviceProviderDTO, existingUser);
+
+        // Salvar o ServiceProvider no banco de dados
         ServiceProvider savedServiceProvider = repository.save(serviceProvider);
-    
+
+        // Retornar o DTO do ServiceProvider salvo
         return ServiceProviderMapper.toServiceProviderDTO(savedServiceProvider);
     }
+
+    public ServiceProviderDTO getServiceProviderById(Long id) {
+        // Buscar o ServiceProvider pelo ID
+        ServiceProvider serviceProvider = repository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Prestador de serviço não encontrado!"));
+
+        // Converter para DTO e retornar
+        return ServiceProviderMapper.toServiceProviderDTO(serviceProvider);
+    }
     
+     public List<ServiceProviderDTO> getAllServiceProviders() {
+        List<ServiceProvider> serviceProviders = repository.findAll();
+        return serviceProviders.stream()
+            .map(ServiceProviderMapper::toServiceProviderDTO)  // Mapeando cada entidade para DTO
+            .collect(Collectors.toList());
+    }
       
 }

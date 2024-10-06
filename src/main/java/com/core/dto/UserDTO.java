@@ -12,8 +12,4 @@ public class UserDTO {
     private String email;
     private String password;
     private AddressDTO addressDTO;
-<<<<<<< HEAD
-    // private ServiceProviderDTO serviceProviderDTO;
-=======
->>>>>>> ed3520c (feat: save service provider (with error 500))
 }
