@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ServiceProviderDTO {
+public class AddressDTO {
     private Long id;
-    private String name;
-    private String description;
-    private String experience;
-    private String image;
-    private Long userId;
+    private String street;
+    private String number;
+    private String neighborhood;
+    private String city;
+    private String state;
 }

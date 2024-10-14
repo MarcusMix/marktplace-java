@@ -1,9 +1,12 @@
 package com.core.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -15,6 +18,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+//@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,10 +27,6 @@ public class User {
     private String password;
 
     @OneToOne
-    @JoinColumn(name = "adress_id", referencedColumnName = "id")
-    private Adress adress;
-
-    @OneToMany
-    @JoinColumn(name = "service_provider_id", referencedColumnName ="id")
-    private ServiceProvider serviceProvider;
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private Address address;
 }
