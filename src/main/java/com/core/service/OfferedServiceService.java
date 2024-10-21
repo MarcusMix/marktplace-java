@@ -4,7 +4,9 @@ import com.core.dto.OfferedServiceDTO;
 import com.core.dto.ServiceProviderDTO;
 import com.core.entity.OfferedService;
 import com.core.repository.OfferedServiceRepository;
+import com.core.repository.ServiceProviderRepository;
 import com.core.util.OfferedServiceMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,9 @@ public class OfferedServiceService {
     @Autowired
     private ServiceProviderService serviceProviderService;
 
+    @Autowired
+    private ServiceProviderRepository serviceProviderRepository;
+
     public List<OfferedServiceDTO> findAll() {
         return offeredServiceRepository.findAll().stream()
                 .map(OfferedServiceMapper::toOfferedServiceDTO)
@@ -33,11 +38,15 @@ public class OfferedServiceService {
     }
 
     public OfferedServiceDTO create(OfferedServiceDTO offeredServiceDTO) {
-        ServiceProviderDTO serviceProviderDTO = serviceProviderService.getServiceProviderById(offeredServiceDTO.getServiceProviderId());
+        ServiceProviderDTO serviceProviderDTO = serviceProviderService
+                .getServiceProviderById(offeredServiceDTO.getServiceProviderId());
         if (serviceProviderDTO == null) {
             return null; // Ou lançar uma exceção
         }
-        OfferedService offeredService = OfferedServiceMapper.toOfferedService(offeredServiceDTO, serviceProviderDTO);
+
+        OfferedService offeredService = OfferedServiceMapper.toOfferedService(
+                offeredServiceDTO, serviceProviderDTO, serviceProviderRepository); // Passar o repositório
+
         return OfferedServiceMapper.toOfferedServiceDTO(offeredServiceRepository.save(offeredService));
     }
 
@@ -45,12 +54,15 @@ public class OfferedServiceService {
         if (!offeredServiceRepository.existsById(id)) {
             return null; // Ou lançar uma exceção
         }
-        ServiceProviderDTO serviceProviderDTO = serviceProviderService.getServiceProviderById(offeredServiceDTO.getServiceProviderId());
+        ServiceProviderDTO serviceProviderDTO = serviceProviderService
+                .getServiceProviderById(offeredServiceDTO.getServiceProviderId());
         if (serviceProviderDTO == null) {
             return null; // Ou lançar uma exceção
         }
         offeredServiceDTO.setId(id);
-        OfferedService offeredService = OfferedServiceMapper.toOfferedService(offeredServiceDTO, serviceProviderDTO);
+        OfferedService offeredService = OfferedServiceMapper.toOfferedService(
+                offeredServiceDTO, serviceProviderDTO, serviceProviderRepository); // Passar o repositório
+
         return OfferedServiceMapper.toOfferedServiceDTO(offeredServiceRepository.save(offeredService));
     }
 
