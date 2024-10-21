@@ -39,13 +39,14 @@ public class ServiceOrderService {
     }
 
     public ServiceOrderDTO updateServiceOrder(Long id, ServiceOrderDTO serviceOrderDTO) {
-        if (!serviceOrderRepository.existsById(id)) {
-            throw new RuntimeException("Ordem de serviço não encontrada");
-        }
-        serviceOrderDTO.setId(id);
-        ServiceOrder serviceOrder = serviceOrderMapper.toServiceOrder(serviceOrderDTO);
-        serviceOrder = serviceOrderRepository.save(serviceOrder);
-        return serviceOrderMapper.toServiceOrderDTO(serviceOrder);
+        ServiceOrder existingOrder = serviceOrderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Ordem de serviço não encontrada"));
+
+        existingOrder.setStatus(serviceOrderDTO.getStatus());
+        existingOrder.setRating(serviceOrderDTO.getRating());
+
+        serviceOrderRepository.save(existingOrder); // Salva a entidade modificada
+        return serviceOrderMapper.toServiceOrderDTO(existingOrder);
     }
 
     public void deleteServiceOrder(Long id) {

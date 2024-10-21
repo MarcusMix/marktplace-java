@@ -31,7 +31,6 @@ public class ServiceOrderMapper {
                 serviceOrder.getOfferedService().getId(),
                 serviceOrder.getStatus(),
                 serviceOrder.getRating()
-        // ... outros atributos
         );
     }
 
@@ -49,7 +48,6 @@ public class ServiceOrderMapper {
         serviceOrder.setOfferedService(offeredService);
         serviceOrder.setStatus(serviceOrderDTO.getStatus());
         serviceOrder.setRating(serviceOrderDTO.getRating());
-        // ... outros atributos
 
         return serviceOrder;
     }

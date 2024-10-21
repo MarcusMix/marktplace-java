@@ -32,5 +32,4 @@ public class ServiceOrder {
 
     private Integer rating; // Nota de 1 a 5
 
-    // ... outros atributos que você julgar necessários
 }
