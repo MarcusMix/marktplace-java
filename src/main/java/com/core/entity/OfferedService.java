@@ -1,5 +1,7 @@
 package com.core.entity;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +26,7 @@ public class OfferedService {
     private String description;
     private Double price;
 
+    @JsonAlias
     @ManyToOne
     @JoinColumn(name = "service_provider_id", referencedColumnName = "id")
     private ServiceProvider serviceProvider;
