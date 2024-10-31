@@ -16,7 +16,7 @@ public class ServiceProviderDTO {
     private String name;
     private String description;
     private String experience;
-    private String image;
+    private byte[] image;
     private Long userId;
     private List<OfferedService> offeredServices;
     
