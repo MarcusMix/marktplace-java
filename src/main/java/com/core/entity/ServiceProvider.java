@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
@@ -27,7 +28,9 @@ public class ServiceProvider {
     private String name;
     private String description;
     private String experience;
-    private String image;
+   
+    @Lob
+    private byte[] image;
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
