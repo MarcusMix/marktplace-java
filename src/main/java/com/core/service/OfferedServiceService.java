@@ -45,7 +45,7 @@ public class OfferedServiceService {
         }
 
         OfferedService offeredService = OfferedServiceMapper.toOfferedService(
-                offeredServiceDTO, serviceProviderDTO, serviceProviderRepository); // Passar o repositório
+                offeredServiceDTO, serviceProviderDTO, serviceProviderRepository);
 
         return OfferedServiceMapper.toOfferedServiceDTO(offeredServiceRepository.save(offeredService));
     }
