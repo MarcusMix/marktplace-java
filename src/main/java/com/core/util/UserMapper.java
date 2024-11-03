@@ -15,6 +15,7 @@ public abstract class UserMapper {
         }
         return new UserDTO(
             user.getId(),
+            user.getName(),
             user.getEmail(),
             user.getPassword(),
             addressDTO
@@ -28,6 +29,7 @@ public abstract class UserMapper {
 
         return new User(
             userDTO.getId(),
+            userDTO.getName(),
             userDTO.getEmail(),
             userDTO.getPassword(),
             AddressMapper.toAddress(userDTO.getAddressDTO())
