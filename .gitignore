@@ -2,6 +2,12 @@
 /target/
 /build/
 
+# security
+*.pub
+*.bin
+*.lock
+*.key
+
 # Maven specific files
 pom.xml.tag
 pom.xml.releaseBackup
