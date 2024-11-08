@@ -24,11 +24,17 @@ public class SecurityConfigurations {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         return httpSecurity
-            .csrf(csrf -> csrf.disable())
+            .cors().and().csrf().disable()
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                .requestMatchers(HttpMethod.POST, "/address").permitAll()
+                .requestMatchers(HttpMethod.GET, "/offered-service").permitAll()
+                .requestMatchers(HttpMethod.GET, "/offered-service/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/service-provider").permitAll()
+                .requestMatchers(HttpMethod.GET, "/service-provider/**").permitAll()
+                // .requestMatchers(HttpMethod.GET, "/**").permitAll()
                     // .requestMatchers(HttpMethod.POST, "/service-provider").hasRole("USER")
                     .anyRequest().authenticated()
                 )
