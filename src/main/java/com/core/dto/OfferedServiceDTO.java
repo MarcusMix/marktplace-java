@@ -14,5 +14,5 @@ public class OfferedServiceDTO {
     private String description;
     private Double price;
     private Long serviceProviderId;
-    private String image;
+    private byte[] image;
 }

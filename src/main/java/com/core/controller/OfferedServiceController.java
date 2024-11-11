@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -38,8 +40,18 @@ public class OfferedServiceController {
     }
 
     @PostMapping
-    public ResponseEntity<OfferedServiceDTO> create(@RequestBody OfferedServiceDTO offeredServiceDTO) {
-        OfferedServiceDTO createdOfferedService = offeredServiceService.create(offeredServiceDTO);
+    public ResponseEntity<OfferedServiceDTO> create(
+            @RequestPart("offeredServiceDTO") OfferedServiceDTO offeredServiceDTO,
+            @RequestPart("imageFile") MultipartFile imageFile) throws IOException {
+
+        // Converter a imagem para um array de bytes
+        byte[] imageBytes = imageFile.getBytes();
+
+        // Setar a imagem no DTO
+        offeredServiceDTO.setImage(imageBytes);
+
+        OfferedServiceDTO createdOfferedService = offeredServiceService.create(offeredServiceDTO, imageFile);
+
         return createdOfferedService != null
                 ? ResponseEntity.status(HttpStatus.CREATED).body(createdOfferedService)
                 : ResponseEntity.badRequest().build();
@@ -47,8 +59,18 @@ public class OfferedServiceController {
 
     @PutMapping("/{id}")
     public ResponseEntity<OfferedServiceDTO> update(@PathVariable Long id,
-            @RequestBody OfferedServiceDTO offeredServiceDTO) {
-        OfferedServiceDTO updatedOfferedService = offeredServiceService.update(id, offeredServiceDTO);
+            @RequestPart("offeredServiceDTO") OfferedServiceDTO offeredServiceDTO,
+            @RequestPart("imageFile") MultipartFile imageFile) throws IOException {
+
+        // Obter bytes da imagem (já está correto)
+        byte[] imageBytes = imageFile.getBytes();
+
+        // Setar imagem no DTO (já está correto)
+        offeredServiceDTO.setImage(imageBytes);
+
+        // Corrigir a chamada do service:
+        OfferedServiceDTO updatedOfferedService = offeredServiceService.update(id, offeredServiceDTO, imageFile);
+
         return updatedOfferedService != null
                 ? ResponseEntity.ok(updatedOfferedService)
                 : ResponseEntity.notFound().build();
