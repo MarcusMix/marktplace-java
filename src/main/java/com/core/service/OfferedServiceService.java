@@ -13,7 +13,9 @@ import com.core.util.OfferedServiceMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,9 +91,16 @@ public class OfferedServiceService {
                 .collect(Collectors.toList());
     }
 
-    public OfferedServiceDTO create(OfferedServiceDTO offeredServiceDTO) {
+    public OfferedServiceDTO create(OfferedServiceDTO offeredServiceDTO, MultipartFile imageFile) throws IOException {
         ServiceProviderDTO serviceProviderDTO = serviceProviderService
                 .getServiceProviderById(offeredServiceDTO.getServiceProviderId());
+
+        // Obter bytes da imagem
+        byte[] imageBytes = imageFile.getBytes();
+
+        // Setar imagem no DTO
+        offeredServiceDTO.setImage(imageBytes);
+
         if (serviceProviderDTO == null) {
             return null; // Ou lançar uma exceção
         }
@@ -102,12 +111,20 @@ public class OfferedServiceService {
         return OfferedServiceMapper.toOfferedServiceDTO(offeredServiceRepository.save(offeredService));
     }
 
-    public OfferedServiceDTO update(Long id, OfferedServiceDTO offeredServiceDTO) {
+    public OfferedServiceDTO update(Long id, OfferedServiceDTO offeredServiceDTO, MultipartFile imageFile)
+            throws IOException {
         if (!offeredServiceRepository.existsById(id)) {
             return null; // Ou lançar uma exceção
         }
         ServiceProviderDTO serviceProviderDTO = serviceProviderService
                 .getServiceProviderById(offeredServiceDTO.getServiceProviderId());
+
+        // Obter bytes da imagem
+        byte[] imageBytes = imageFile.getBytes();
+
+        // Setar imagem no DTO
+        offeredServiceDTO.setImage(imageBytes);
+
         if (serviceProviderDTO == null) {
             return null; // Ou lançar uma exceção
         }
