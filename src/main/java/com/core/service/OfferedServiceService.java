@@ -2,15 +2,21 @@ package com.core.service;
 
 import com.core.dto.OfferedServiceDTO;
 import com.core.dto.ServiceProviderDTO;
+import com.core.dto.ServiceSearchDTO;
 import com.core.entity.OfferedService;
+import com.core.entity.ServiceOrder;
+import com.core.entity.ServiceProvider;
 import com.core.repository.OfferedServiceRepository;
+import com.core.repository.ServiceOrderRepository;
 import com.core.repository.ServiceProviderRepository;
 import com.core.util.OfferedServiceMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,6 +31,9 @@ public class OfferedServiceService {
     @Autowired
     private ServiceProviderRepository serviceProviderRepository;
 
+    @Autowired
+    private ServiceOrderRepository serviceOrderRepository;
+
     public List<OfferedServiceDTO> findAll() {
         return offeredServiceRepository.findAll().stream()
                 .map(OfferedServiceMapper::toOfferedServiceDTO)
@@ -35,6 +44,49 @@ public class OfferedServiceService {
         return offeredServiceRepository.findById(id)
                 .map(OfferedServiceMapper::toOfferedServiceDTO)
                 .orElse(null);
+    }
+
+    public List<OfferedServiceDTO> searchServices(ServiceSearchDTO searchDTO) {
+        String serviceName = searchDTO.getServiceName();
+        String userLocation = searchDTO.getUserLocation();
+
+        // 1. Buscar os provedores de serviço na localidade do usuário
+        List<ServiceProvider> serviceProviders = serviceProviderRepository.findByUserAddressCity(userLocation);
+
+        // 2. Buscar os serviços oferecidos por esses provedores com o nome especificado
+        List<OfferedService> offeredServices = offeredServiceRepository
+                .findByServiceProviderInAndNameContainingIgnoreCase(serviceProviders, serviceName);
+
+        // 3. Obter os IDs dos serviços oferecidos
+        List<Long> offeredServiceIds = offeredServices.stream()
+                .map(OfferedService::getId)
+                .collect(Collectors.toList());
+
+        // 4. Buscar todos os pedidos de serviço com esses IDs, ordenados pela nota em
+        // ordem decrescente
+        List<ServiceOrder> serviceOrders = serviceOrderRepository
+                .findByOfferedServiceIdInOrderByRatingDesc(offeredServiceIds);
+
+        // 5. Criar um mapa para armazenar a maior nota de cada serviço
+        Map<Long, Integer> serviceRatings = new HashMap<>();
+        for (ServiceOrder order : serviceOrders) {
+            Long offeredServiceId = order.getOfferedService().getId();
+            if (!serviceRatings.containsKey(offeredServiceId)) {
+                serviceRatings.put(offeredServiceId, order.getRating());
+            }
+        }
+
+        // 6. Ordenar os serviços oferecidos com base na maior nota
+        offeredServices.sort((s1, s2) -> {
+            Integer rating1 = serviceRatings.getOrDefault(s1.getId(), 0);
+            Integer rating2 = serviceRatings.getOrDefault(s2.getId(), 0);
+            return rating2.compareTo(rating1);
+        });
+
+        // 7. Converter para DTO e retornar
+        return offeredServices.stream()
+                .map(OfferedServiceMapper::toOfferedServiceDTO)
+                .collect(Collectors.toList());
     }
 
     public OfferedServiceDTO create(OfferedServiceDTO offeredServiceDTO) {

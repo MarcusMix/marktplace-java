@@ -1,6 +1,7 @@
 package com.core.controller;
 
 import com.core.dto.OfferedServiceDTO;
+import com.core.dto.ServiceSearchDTO;
 import com.core.service.OfferedServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,12 @@ public class OfferedServiceController {
         return offeredServiceDTO != null
                 ? ResponseEntity.ok(offeredServiceDTO)
                 : ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<List<OfferedServiceDTO>> searchServices(@RequestBody ServiceSearchDTO searchDTO) {
+        List<OfferedServiceDTO> searchResults = offeredServiceService.searchServices(searchDTO);
+        return ResponseEntity.ok(searchResults);
     }
 
     @PostMapping
