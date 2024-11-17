@@ -19,6 +19,18 @@ public class ServiceOrderService {
     @Autowired
     private ServiceOrderMapper serviceOrderMapper;
 
+    public List<ServiceOrderDTO> getServiceOrdersByUserId(Long userId) {
+        // Busca as ordens de serviço associadas ao userId
+        List<ServiceOrder> serviceOrders = serviceOrderRepository.findByUserId(userId);
+    
+        // Mapeia as entidades para DTOs
+        return serviceOrders.stream()
+                .map(serviceOrderMapper::toServiceOrderDTO)
+                .collect(Collectors.toList());
+    }
+    
+    
+
     public List<ServiceOrderDTO> getAllServiceOrders() {
         List<ServiceOrder> serviceOrders = serviceOrderRepository.findAll();
         return serviceOrders.stream()
