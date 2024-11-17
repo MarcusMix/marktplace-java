@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ServiceOrderRepository extends JpaRepository<ServiceOrder, Long> {
+    List<ServiceOrder> findByUserId(Long userId);
 
     List<ServiceOrder> findByOfferedServiceIdInOrderByRatingDesc(List<Long> offeredServiceIds);
 }

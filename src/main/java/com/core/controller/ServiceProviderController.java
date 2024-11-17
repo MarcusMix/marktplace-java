@@ -26,6 +26,14 @@ public class ServiceProviderController {
     @Autowired
     private ServiceProviderService service;
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<ServiceProviderDTO> getServiceProviderByUserId(@PathVariable Long userId) {
+        ServiceProviderDTO serviceProvider = service.getServiceProviderByUserId(userId);
+        return ResponseEntity.ok(serviceProvider);
+    }
+
+    
+
     @PostMapping
     public ResponseEntity<ServiceProviderDTO> saveServiceProvider(
             @RequestPart("serviceProviderDTO") ServiceProviderDTO serviceProviderDTO,
