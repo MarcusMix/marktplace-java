@@ -17,12 +17,17 @@ public class ServiceOrderController {
     @Autowired
     private ServiceOrderService serviceOrderService;
 
+    @PutMapping("/{id}/rating")
+    public ResponseEntity<Void> updateRating(@PathVariable Long id, @RequestBody int rating) {
+        serviceOrderService.updateRating(id, rating);
+        return ResponseEntity.ok().build();
+    }
+
+
     @GetMapping("/user/{userId}")
     public List<ServiceOrderDTO> getServiceOrdersByUserId(@PathVariable Long userId) {
         return serviceOrderService.getServiceOrdersByUserId(userId);
     }
-
-
 
     @GetMapping
     public List<ServiceOrderDTO> getAllServiceOrders() {
