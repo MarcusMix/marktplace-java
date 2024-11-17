@@ -23,10 +23,11 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String token = JWT.create()
-                .withIssuer("marktplace")
-                .withSubject(user.getEmail())
-                .withExpiresAt(getExpiration())
-                .sign(algorithm);
+                    .withIssuer("marktplace")
+                    .withSubject(user.getEmail())
+                    .withExpiresAt(getExpiration())
+                    .withClaim("userId", user.getId())
+                    .sign(algorithm);
 
             return token;
         } catch (JWTDecodeException exception) {
@@ -39,10 +40,10 @@ public class TokenService {
 
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
-                .withIssuer("marktplace")
-                .build()
-                .verify(token)
-                .getSubject();
+                    .withIssuer("marktplace")
+                    .build()
+                    .verify(token)
+                    .getSubject();
         } catch (JWTVerificationException exception) {
             throw new JWTVerificationException("Token inválido ou expirado.");
         }
@@ -51,5 +52,5 @@ public class TokenService {
     private Instant getExpiration() {
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }
-    
+
 }
