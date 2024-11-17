@@ -24,6 +24,15 @@ public class ServiceProviderService {
     @Autowired
     private UserRepository userRepository;
 
+    public ServiceProviderDTO getServiceProviderByUserId(Long userId) {
+        // Busca o prestador de serviço pelo userId
+        ServiceProvider serviceProvider = repository.findByUserId(userId)
+            .orElseThrow(() -> new IllegalArgumentException("Prestador de serviço não encontrado para o usuário!"));
+    
+        // Converte para DTO e retorna
+        return ServiceProviderMapper.toServiceProviderDTO(serviceProvider);
+    }
+
     public ServiceProviderDTO saveServiceProvider(ServiceProviderDTO serviceProviderDTO, MultipartFile imageFile)
             throws IOException {
         // Buscar o User já existente pelo ID fornecido no DTO
