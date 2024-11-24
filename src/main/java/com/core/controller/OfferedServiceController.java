@@ -60,13 +60,16 @@ public class OfferedServiceController {
     @PutMapping("/{id}")
     public ResponseEntity<OfferedServiceDTO> update(@PathVariable Long id,
             @RequestPart("offeredServiceDTO") OfferedServiceDTO offeredServiceDTO,
-            @RequestPart("imageFile") MultipartFile imageFile) throws IOException {
+            @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) throws IOException {
 
-        // Obter bytes da imagem (já está correto)
-        byte[] imageBytes = imageFile.getBytes();
+        if (imageFile != null && !imageFile.isEmpty()) {
+            // Obter bytes da imagem (agora dentro do if)
+            byte[] imageBytes = imageFile.getBytes();
 
-        // Setar imagem no DTO (já está correto)
-        offeredServiceDTO.setImage(imageBytes);
+            // Setar imagem no DTO (agora dentro do if)
+            offeredServiceDTO.setImage(imageBytes);
+
+        }
 
         // Corrigir a chamada do service:
         OfferedServiceDTO updatedOfferedService = offeredServiceService.update(id, offeredServiceDTO, imageFile);

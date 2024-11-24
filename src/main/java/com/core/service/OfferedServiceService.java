@@ -11,6 +11,8 @@ import com.core.repository.ServiceOrderRepository;
 import com.core.repository.ServiceProviderRepository;
 import com.core.util.OfferedServiceMapper;
 
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -116,23 +118,40 @@ public class OfferedServiceService {
         if (!offeredServiceRepository.existsById(id)) {
             return null; // Ou lançar uma exceção
         }
+
+        OfferedService existingService = offeredServiceRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Serviço não encontrado com ID: " + id));
+
         ServiceProviderDTO serviceProviderDTO = serviceProviderService
                 .getServiceProviderById(offeredServiceDTO.getServiceProviderId());
 
-        // Obter bytes da imagem
-        byte[] imageBytes = imageFile.getBytes();
+        // Verifica se uma nova imagem foi enviada
+        if (imageFile != null && !imageFile.isEmpty()) {
+            // Obter bytes da imagem
+            byte[] imageBytes = imageFile.getBytes();
 
-        // Setar imagem no DTO
-        offeredServiceDTO.setImage(imageBytes);
+            // Setar imagem no DTO
+            offeredServiceDTO.setImage(imageBytes);
+
+            // Atualiza a imagem no serviço existente
+            existingService.setImage(imageBytes);
+        }
 
         if (serviceProviderDTO == null) {
             return null; // Ou lançar uma exceção
         }
-        offeredServiceDTO.setId(id);
-        OfferedService offeredService = OfferedServiceMapper.toOfferedService(
-                offeredServiceDTO, serviceProviderDTO, serviceProviderRepository); // Passar o repositório
 
-        return OfferedServiceMapper.toOfferedServiceDTO(offeredServiceRepository.save(offeredService));
+        // Atualiza os demais campos do serviço existente
+        existingService.setName(offeredServiceDTO.getName());
+        existingService.setDescription(offeredServiceDTO.getDescription());
+        existingService.setPrice(offeredServiceDTO.getPrice());
+
+        offeredServiceDTO.setId(id);
+
+        // Salva o serviço existente com as alterações (incluindo a imagem, se houver)
+        OfferedService updatedService = offeredServiceRepository.save(existingService);
+
+        return OfferedServiceMapper.toOfferedServiceDTO(updatedService);
     }
 
     public void delete(Long id) {
