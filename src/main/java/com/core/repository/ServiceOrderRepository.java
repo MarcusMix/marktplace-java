@@ -12,4 +12,7 @@ public interface ServiceOrderRepository extends JpaRepository<ServiceOrder, Long
     List<ServiceOrder> findByUserId(Long userId);
 
     List<ServiceOrder> findByOfferedServiceIdInOrderByRatingDesc(List<Long> offeredServiceIds);
+
+    List<ServiceOrder> findByServiceProviderId(Long providerId);
+
 }
