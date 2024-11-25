@@ -12,10 +12,11 @@ public class ServiceOrderDTO {
 
     private Long id;
     private Long userId;
+    private String userName; // Novo campo para o nome do usuário
     private Long serviceProviderId;
     private Long offeredServiceId;
+    private String offeredServiceName; // Novo campo para o nome do serviço
     private ServiceOrderStatus status;
     private Integer rating;
 
-    // ... outros atributos que você julgar necessários
 }

@@ -14,41 +14,43 @@ import org.springframework.stereotype.Component;
 @Component
 public class ServiceOrderMapper {
 
-    @Autowired
-    private UserRepository userRepository;
+        @Autowired
+        private UserRepository userRepository;
 
-    @Autowired
-    private ServiceProviderRepository serviceProviderRepository;
+        @Autowired
+        private ServiceProviderRepository serviceProviderRepository;
 
-    @Autowired
-    private OfferedServiceRepository offeredServiceRepository;
+        @Autowired
+        private OfferedServiceRepository offeredServiceRepository;
 
-    public ServiceOrderDTO toServiceOrderDTO(ServiceOrder serviceOrder) {
-        return new ServiceOrderDTO(
-                serviceOrder.getId(),
-                serviceOrder.getUser().getId(),
-                serviceOrder.getServiceProvider().getId(),
-                serviceOrder.getOfferedService().getId(),
-                serviceOrder.getStatus(),
-                serviceOrder.getRating()
-        );
-    }
+        public ServiceOrderDTO toServiceOrderDTO(ServiceOrder serviceOrder) {
+                return new ServiceOrderDTO(
+                                serviceOrder.getId(),
+                                serviceOrder.getUser().getId(),
+                                serviceOrder.getUser().getName(), // Mapeia o nome do usuário
+                                serviceOrder.getServiceProvider().getId(),
+                                serviceOrder.getOfferedService().getId(),
+                                serviceOrder.getOfferedService().getName(), // Mapeia o nome do serviço
+                                serviceOrder.getStatus(),
+                                serviceOrder.getRating());
+        }
 
-    public ServiceOrder toServiceOrder(ServiceOrderDTO serviceOrderDTO) {
-        User user = userRepository.findById(serviceOrderDTO.getUserId())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-        ServiceProvider serviceProvider = serviceProviderRepository.findById(serviceOrderDTO.getServiceProviderId())
-                .orElseThrow(() -> new RuntimeException("Prestador de serviço não encontrado"));
-        OfferedService offeredService = offeredServiceRepository.findById(serviceOrderDTO.getOfferedServiceId())
-                .orElseThrow(() -> new RuntimeException("Serviço oferecido não encontrado"));
+        public ServiceOrder toServiceOrder(ServiceOrderDTO serviceOrderDTO) {
+                User user = userRepository.findById(serviceOrderDTO.getUserId())
+                                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                ServiceProvider serviceProvider = serviceProviderRepository
+                                .findById(serviceOrderDTO.getServiceProviderId())
+                                .orElseThrow(() -> new RuntimeException("Prestador de serviço não encontrado"));
+                OfferedService offeredService = offeredServiceRepository.findById(serviceOrderDTO.getOfferedServiceId())
+                                .orElseThrow(() -> new RuntimeException("Serviço oferecido não encontrado"));
 
-        ServiceOrder serviceOrder = new ServiceOrder();
-        serviceOrder.setUser(user);
-        serviceOrder.setServiceProvider(serviceProvider);
-        serviceOrder.setOfferedService(offeredService);
-        serviceOrder.setStatus(serviceOrderDTO.getStatus());
-        serviceOrder.setRating(serviceOrderDTO.getRating());
+                ServiceOrder serviceOrder = new ServiceOrder();
+                serviceOrder.setUser(user);
+                serviceOrder.setServiceProvider(serviceProvider);
+                serviceOrder.setOfferedService(offeredService);
+                serviceOrder.setStatus(serviceOrderDTO.getStatus());
+                serviceOrder.setRating(serviceOrderDTO.getRating());
 
-        return serviceOrder;
-    }
+                return serviceOrder;
+        }
 }
