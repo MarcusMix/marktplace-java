@@ -1,6 +1,7 @@
 package com.core.controller;
 
 import com.core.dto.ServiceOrderDTO;
+import com.core.entity.ServiceOrderStatus;
 import com.core.service.ServiceOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,10 +24,14 @@ public class ServiceOrderController {
         return ResponseEntity.ok().build();
     }
 
-
     @GetMapping("/user/{userId}")
     public List<ServiceOrderDTO> getServiceOrdersByUserId(@PathVariable Long userId) {
         return serviceOrderService.getServiceOrdersByUserId(userId);
+    }
+
+    @GetMapping("/provider/{providerId}")
+    public List<ServiceOrderDTO> getServiceOrdersByProviderId(@PathVariable Long providerId) {
+        return serviceOrderService.getServiceOrdersByProviderId(providerId);
     }
 
     @GetMapping
@@ -48,6 +53,13 @@ public class ServiceOrderController {
     @PutMapping("/{id}")
     public ServiceOrderDTO updateServiceOrder(@PathVariable Long id, @RequestBody ServiceOrderDTO serviceOrderDTO) {
         return serviceOrderService.updateServiceOrder(id, serviceOrderDTO);
+    }
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity<Void> updateServiceOrderStatus(@PathVariable Long id,
+            @RequestBody ServiceOrderStatus newStatus) {
+        serviceOrderService.updateServiceOrderStatus(id, newStatus);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
