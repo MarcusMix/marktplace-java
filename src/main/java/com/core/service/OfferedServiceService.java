@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,8 +55,15 @@ public class OfferedServiceService {
         String serviceName = searchDTO.getServiceName();
         String userLocation = searchDTO.getUserLocation();
 
-        // 1. Buscar os provedores de serviço na localidade do usuário
-        List<ServiceProvider> serviceProviders = serviceProviderRepository.findByUserAddressCity(userLocation);
+        List<ServiceProvider> serviceProviders = new ArrayList<>();
+
+        if (userLocation != null && !userLocation.isEmpty()) {
+            // Busca provedores por localização se userLocation for fornecido
+            serviceProviders = serviceProviderRepository.findByUserAddressCity(userLocation);
+        } else {
+            // Se userLocation não for fornecido, busca todos os provedores
+            serviceProviders = serviceProviderRepository.findAll();
+        }
 
         // 2. Buscar os serviços oferecidos por esses provedores com o nome especificado
         List<OfferedService> offeredServices = offeredServiceRepository
