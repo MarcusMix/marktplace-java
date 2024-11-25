@@ -26,14 +26,14 @@ public abstract class AddressMapper {
         if (addressDTO == null) {
             throw new IllegalArgumentException("AddressDTO não pode ser null");
         }
-
-        return new Address(
-                addressDTO.getId(),
-                addressDTO.getStreet(),
-                addressDTO.getNumber(),
-                addressDTO.getNeighborhood(),
-                addressDTO.getCity(),
-                addressDTO.getState());
+        // Conversão do DTO para a entidade Address
+        Address address = new Address();
+        address.setCity(addressDTO.getCity());
+        address.setState(addressDTO.getState());
+        address.setStreet(addressDTO.getStreet());
+        address.setNumber(addressDTO.getNumber());
+        address.setNeighborhood(addressDTO.getNeighborhood());
+        return address;
     }
 
 }
