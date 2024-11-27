@@ -28,7 +28,7 @@ public class AddressTest {
         MockitoAnnotations.openMocks(this);
     }
 
-   @Test
+    @Test
     public void verificarEstado() {
 
         AddressDTO addressPadrao = new AddressDTO();
@@ -44,8 +44,9 @@ public class AddressTest {
         assertNotEquals(addressPadrao, addressErrado, " Os Estados devem ser distindos");
 
         // teste verifica tamanho estado = 2
-        assertEquals(addressCerto.getState().length(), addressPadrao.getState().length(), " O tamanho do Estado não pode ter mais de 2 caracteres");
-  
+        assertEquals(addressCerto.getState().length(), addressPadrao.getState().length(),
+                " O tamanho do Estado não pode ter mais de 2 caracteres");
+
         // teste verifica tamanho estado = 2
         assertTrue(InputValidation.isValidLength(addressCerto.getState(), 2));
 
@@ -91,7 +92,8 @@ public class AddressTest {
         addressDTO.setNumber("100");
 
         // Simula o lançamento de uma exceção no repositório
-        when(repository.save(org.mockito.ArgumentMatchers.any(Address.class))).thenThrow(new RuntimeException("Database error"));
+        when(repository.save(org.mockito.ArgumentMatchers.any(Address.class)))
+                .thenThrow(new RuntimeException("Database error"));
 
         // Executa o método de salvar no serviço e captura a exceção
         try {
@@ -101,6 +103,5 @@ public class AddressTest {
             assertEquals("Database error", e.getMessage());
         }
     }
-
 
 }

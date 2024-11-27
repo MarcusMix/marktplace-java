@@ -1,9 +1,5 @@
 package com.core.dto;
 
-import java.util.List;
-
-import com.core.entity.OfferedService;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,13 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ServiceProviderDTO {
+public class OfferedServiceDTO {
+
     private Long id;
     private String name;
     private String description;
-    private String experience;
+    private Double price;
+    private Long serviceProviderId;
     private byte[] image;
-    private Long userId;
-    private List<OfferedService> offeredServices;
-    
 }

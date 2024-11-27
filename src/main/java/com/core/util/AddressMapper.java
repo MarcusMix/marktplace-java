@@ -4,20 +4,19 @@ import com.core.dto.AddressDTO;
 import com.core.entity.Address;
 
 public abstract class AddressMapper {
-    
+
     public static AddressDTO toAddressDTO(Address address) {
         if (address == null) {
             throw new IllegalArgumentException("Endereço não pode ser nulo!");
         }
 
         AddressDTO addressDTO = new AddressDTO(
-            address.getId(),
-            address.getCity(),
-            address.getNumber(),
-            address.getNeighborhood(),
-            address.getState(),
-            address.getStreet()
-        );
+                address.getId(),
+                address.getStreet(),
+                address.getNumber(),
+                address.getNeighborhood(),
+                address.getCity(),
+                address.getState());
 
         return addressDTO;
 
@@ -27,16 +26,14 @@ public abstract class AddressMapper {
         if (addressDTO == null) {
             throw new IllegalArgumentException("AddressDTO não pode ser null");
         }
-
-        return new Address(
-            addressDTO.getId(),
-            addressDTO.getCity(),
-            addressDTO.getNumber(),
-            addressDTO.getNeighborhood(),
-            addressDTO.getState(),
-            addressDTO.getStreet()
-        );
+        // Conversão do DTO para a entidade Address
+        Address address = new Address();
+        address.setCity(addressDTO.getCity());
+        address.setState(addressDTO.getState());
+        address.setStreet(addressDTO.getStreet());
+        address.setNumber(addressDTO.getNumber());
+        address.setNeighborhood(addressDTO.getNeighborhood());
+        return address;
     }
-
 
 }

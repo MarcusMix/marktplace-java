@@ -107,4 +107,15 @@ public class UserService {
         return UserMapper.toUserDTO(userSalvo);
     }
 
+    public UserDTO getByEmail(String email) {
+        Optional<User> userOptional = repository.findUserByEmail(email);
+    
+        if (userOptional.isPresent()) {
+            return UserMapper.toUserDTO(userOptional.get());
+        } else {
+            throw new EntityNotFoundException("Usuário com o email " + email + " não encontrado!");
+        }
+    }
+    
+
 }
