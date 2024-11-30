@@ -12,6 +12,7 @@ public abstract class AddressMapper {
 
         AddressDTO addressDTO = new AddressDTO(
                 address.getId(),
+                address.getCep(),
                 address.getStreet(),
                 address.getNumber(),
                 address.getNeighborhood(),
@@ -28,6 +29,7 @@ public abstract class AddressMapper {
         }
         // Conversão do DTO para a entidade Address
         Address address = new Address();
+        address.setCep(addressDTO.getCep());
         address.setCity(addressDTO.getCity());
         address.setState(addressDTO.getState());
         address.setStreet(addressDTO.getStreet());
