@@ -1,8 +1,10 @@
 package com.core.service;
 
+import com.core.entity.OfferedService;
 import com.core.entity.ServiceOrder;
 import com.core.entity.ServiceOrderStatus;
 import com.core.dto.ServiceOrderDTO;
+import com.core.repository.OfferedServiceRepository;
 import com.core.repository.ServiceOrderRepository;
 import com.core.util.ServiceOrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ public class ServiceOrderService {
     @Autowired
     private ServiceOrderMapper serviceOrderMapper;
 
+    @Autowired
+    private OfferedServiceRepository offeredServiceRepository;
+
     public void updateRating(Long id, int rating) {
         // Verificar se a ordem de serviço existe
         ServiceOrder serviceOrder = serviceOrderRepository.findById(id)
@@ -30,6 +35,28 @@ public class ServiceOrderService {
 
         // Salvar a ordem de serviço atualizada
         serviceOrderRepository.save(serviceOrder);
+        // Atualizar a avaliação
+        serviceOrder.setRating(rating);
+
+        // Salvar a ordem de serviço atualizada
+        serviceOrderRepository.save(serviceOrder);
+
+        // --- Início da nova lógica ---
+        OfferedService offeredService = serviceOrder.getOfferedService();
+        List<ServiceOrder> orders = serviceOrderRepository.findByOfferedServiceIdAndStatus(offeredService.getId(),
+                ServiceOrderStatus.FINISHED);
+
+        double total = 0;
+        for (ServiceOrder order : orders) {
+            if (order.getRating() != null) {
+                total += order.getRating();
+            }
+        }
+
+        double averageRating = orders.isEmpty() ? 0 : total / orders.size();
+        offeredService.setTotalRating(averageRating);
+        offeredServiceRepository.save(offeredService);
+        // --- Fim da nova lógica ---
     }
 
     public List<ServiceOrderDTO> getServiceOrdersByUserId(Long userId) {

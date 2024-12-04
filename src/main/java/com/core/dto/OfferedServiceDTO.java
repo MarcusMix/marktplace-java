@@ -15,4 +15,5 @@ public class OfferedServiceDTO {
     private Double price;
     private Long serviceProviderId;
     private byte[] image;
+    private Double totalRating;
 }
