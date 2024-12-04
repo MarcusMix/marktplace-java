@@ -65,21 +65,16 @@ public class OfferedServiceService {
             serviceProviders = serviceProviderRepository.findAll();
         }
 
-        // 2. Buscar os serviços oferecidos por esses provedores com o nome especificado
         List<OfferedService> offeredServices = offeredServiceRepository
                 .findByServiceProviderInAndNameContainingIgnoreCase(serviceProviders, serviceName);
 
-        // 3. Obter os IDs dos serviços oferecidos
         List<Long> offeredServiceIds = offeredServices.stream()
                 .map(OfferedService::getId)
                 .collect(Collectors.toList());
 
-        // 4. Buscar todos os pedidos de serviço com esses IDs, ordenados pela nota em
-        // ordem decrescente
         List<ServiceOrder> serviceOrders = serviceOrderRepository
                 .findByOfferedServiceIdInOrderByRatingDesc(offeredServiceIds);
 
-        // 5. Criar um mapa para armazenar a maior nota de cada serviço
         Map<Long, Integer> serviceRatings = new HashMap<>();
         for (ServiceOrder order : serviceOrders) {
             Long offeredServiceId = order.getOfferedService().getId();
@@ -88,14 +83,12 @@ public class OfferedServiceService {
             }
         }
 
-        // 6. Ordenar os serviços oferecidos com base na maior nota
         offeredServices.sort((s1, s2) -> {
-            Integer rating1 = serviceRatings.getOrDefault(s1.getId(), 0);
-            Integer rating2 = serviceRatings.getOrDefault(s2.getId(), 0);
-            return rating2.compareTo(rating1);
+            Double rating1 = s1.getTotalRating() != null ? s1.getTotalRating() : 0;
+            Double rating2 = s2.getTotalRating() != null ? s2.getTotalRating() : 0;
+            return rating2.compareTo(rating1); // Ordenar em ordem decrescente de avaliação
         });
 
-        // 7. Converter para DTO e retornar
         return offeredServices.stream()
                 .map(OfferedServiceMapper::toOfferedServiceDTO)
                 .collect(Collectors.toList());
