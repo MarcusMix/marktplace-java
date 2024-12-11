@@ -15,7 +15,8 @@ public abstract class OfferedServiceMapper {
                 offeredService.getDescription(),
                 offeredService.getPrice(),
                 offeredService.getServiceProvider().getId(),
-                offeredService.getImage());
+                offeredService.getImage(),
+                offeredService.getTotalRating());
     }
 
     public static OfferedService toOfferedService(OfferedServiceDTO offeredServiceDTO,

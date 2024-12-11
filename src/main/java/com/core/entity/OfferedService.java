@@ -36,4 +36,6 @@ public class OfferedService {
     @ManyToOne
     @JoinColumn(name = "service_provider_id", referencedColumnName = "id")
     private ServiceProvider serviceProvider;
+
+    private Double totalRating;
 }

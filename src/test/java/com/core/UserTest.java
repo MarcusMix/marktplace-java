@@ -60,7 +60,7 @@ public class UserTest {
     @Test
     public void testUpdateUser() {
         // Criando usuário existente
-        AddressDTO addressDTO = new AddressDTO("São Paulo", "SP", "Rua Velha", "123", "Centro");
+        AddressDTO addressDTO = new AddressDTO("88021000", "São Paulo", "SP", "Rua Velha", "123", "Centro");
         User existingUser = new User(1L, "Marcus", "marcus@email.com", "password123", null);
 
         // Criando UserDTO com atualização

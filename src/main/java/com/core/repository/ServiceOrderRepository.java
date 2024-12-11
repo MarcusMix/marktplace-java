@@ -1,6 +1,7 @@
 package com.core.repository;
 
 import com.core.entity.ServiceOrder;
+import com.core.entity.ServiceOrderStatus;
 
 import java.util.List;
 
@@ -14,5 +15,7 @@ public interface ServiceOrderRepository extends JpaRepository<ServiceOrder, Long
     List<ServiceOrder> findByOfferedServiceIdInOrderByRatingDesc(List<Long> offeredServiceIds);
 
     List<ServiceOrder> findByServiceProviderId(Long providerId);
+
+    List<ServiceOrder> findByOfferedServiceIdAndStatus(Long offeredServiceId, ServiceOrderStatus status);
 
 }
